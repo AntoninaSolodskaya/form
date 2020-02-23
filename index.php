@@ -9,11 +9,19 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="nav-container">
-            <div class="header-logo">
-                <img class="graficlogo" src="images/Logo.png" alt="Logo">
-            </div>
+    <header class="nav-container header">
+        <input type="checkbox" id="nav-check">
+        <div class="header-logo">
+            <img class="graficlogo" src="images/Logo.png" alt="Logo">
+        </div>
+        <div class="nav-btn">
+            <label for="nav-check">
+            <span></span>
+            <span></span>
+            <span></span>
+            </label>
+        </div>
+        <div class="nav-links">
             <nav>
                 <ul>
                     <li>
@@ -28,15 +36,12 @@
                             <button type="button" class="option"><a href="#" class="btn-text">Front-end developer</a></button>
                         </div>
                     </li>
-                    
-
                     <li>
                         <a href="#">About</a>
                     </li>
                     <li>
                         <a href="#">Video</a>
                     </li>
-
                     <li class="select-wrap">
                         <button type="button" class="btn-selected">Interesting</button>
                         <div class="select-options-wrap hide">
@@ -46,7 +51,6 @@
                             <button type="button" class="option"><a href="#">Community</a></button>
                         </div>
                     </li>
-                    
                 </ul>
             </nav>
             <div class="header-login">
@@ -102,7 +106,7 @@
         <div class="wrap">
             <div class="footer-container">
                 <div class="footer-nav">
-                    <ul>
+                    <ul class="footer-ul">
                         <li class="footer-link">
                             <a href="#">Home</a>
                         </li>
@@ -121,19 +125,21 @@
                     </ul>
                 </div>
                 <div class="main-footer-section">
-                    <div class="footer-section">
-                        <div class="footer-item">Courses</div>
-                        <p>Project management</p>
-                        <p>Android development</p>
-                        <p>Online marketing</p>
-                        <p>Front-end developer</p>
-                    </div>
-                    <div class="footer-section-blog">
-                        <div class="footer-item">Interesting</div>
-                        <p>Blog</p>
-                        <p>Youtube</p>
-                        <p>Team</p>
-                        <p>Community</p>
+                    <div class="footer-block">
+                        <div class="footer-section">
+                            <div class="footer-item">Courses</div>
+                            <p>Project management</p>
+                            <p>Android development</p>
+                            <p>Online marketing</p>
+                            <p>Front-end developer</p>
+                        </div>
+                        <div class="footer-section">
+                            <div class="footer-item">Interesting</div>
+                            <p>Blog</p>
+                            <p>Youtube</p>
+                            <p>Team</p>
+                            <p>Community</p>
+                        </div>
                     </div>
                     <div class="links-section">
                         <div class="footer-item">Social networks</div>
