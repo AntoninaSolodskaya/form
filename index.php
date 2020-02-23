@@ -61,14 +61,31 @@
     <main>
         <div class="wrapper">
             <div class="form-container">
-                <form>
+                <form action="register.php" name="register" id="auth" method="post" onsubmit="return validateForm()">
                     <div class="field-section">
                         <label for="name" class="item">ФИО</label>
-                        <input type="text" id="name"  name="username">
+                        <input 
+                            type="text" 
+                            name="username" 
+                            class="form-control" 
+                            id="name" 
+                            onchange="myFunction('name')"
+                            onkeyup="myFunction('name')" 
+                        >
+                        <div class="error" id="nameErr"></div>
+
                     </div>
                     <div class="field-section">
-                        <label for="emailId" class="item">E-mail</label>
-                        <input type="text" id="emailId"  name="email">
+                        <label for="email" class="item">E-mail</label>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            class="form-control" 
+                            id="email" 
+                            onchange="myFunction('email')"
+                            onkeyup="myFunction('email')" 
+                        >
+                        <div class="error" id="emailErr"></div>
                     </div>
                     <div class="field-phone-section">
                         <label for="countId" class="item">Телефон</label>
@@ -77,26 +94,42 @@
                                 <input id="tel" type="tel" />
                             </div>
                             <div class="phone-btn-wrap">
-                                <button type="button" id="addButton">+</button>
+                                <button 
+                                type="button" 
+                                class='btn btn-secondary' 
+                                id="addButton">+</button>
                             </div>
+                            <div class='error' id='phoneErr'></div>
                         </div>
                         <ul id="telList"></ul>
                     </div>
                     <div class="field-section">
-                        <label for="ageId" class="item">Возраст</label>
-                        <input type="text" id="ageId"  name="age">
+                        <label for="age" class="item">Возраст</label>
+                        <input
+                            type="number"
+                            name="age"
+                            class="form-control"
+                            id="age"
+                            onchange="myFunction('age')" 
+                            onkeyup="myFunction('age')" 
+                        
+                        />
+                        <div class="error" id="ageErr"></div>
                     </div>
                     <div class="item-photo">Фотография</div>
                     <div class="image-upload">
-                        <label for="fileId">
+                        <label for="file">
                             <img src="images/image.png" />
                         </label>
 
-                        <input id="fileId" type="file" />
+                        <input id="file" type="file" name="photo"/>
+                        <div class="error" id="fileErr"></div>
                     </div>
                     <div class="field-section">
                         <label for="summaryId" class="item">Резюме</label>
-                        <textarea rows="10" cols="45" d="summaryId" name="summary" wrap="off"></textarea>
+                        <textarea rows="10" cols="45" id="summary"  onchange="myFunction('summary')" 
+                            onkeyup="myFunction('summary')"  name="summary" wrap="off"></textarea>
+                        <div class="error" id="summaryErr"></div>
                     </div>
                 </form>
             </div>
@@ -158,7 +191,15 @@
             </div>
         </div>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
 <script>
+    $(document).ready(function () {
+    bsCustomFileInput.init()
+  });
 
 let btnsSelect = document.querySelectorAll('.btn-selected');
 let allOptions = document.querySelectorAll('.option'); 
@@ -180,7 +221,7 @@ const onKeyPress = (e) => {
   }
 }
 
-const onAdd = () => {  
+const onAdd = () => {
   const tel = document.querySelector('#tel').value.trim();
   
   if (tel) {
@@ -205,6 +246,104 @@ const onAdd = () => {
 
 document.querySelector('#addButton').addEventListener('click', onAdd);
 document.querySelector('#tel').addEventListener('keypress', onKeyPress);
+
+
+function printError(elemId, hintMsg) {
+    let error = document.getElementById(elemId);
+    error.innerHTML = hintMsg;
+}
+
+
+function myFunction($name) {
+    const fileInput = document.getElementById('file');
+    const file = fileInput.value.split("\\");
+    const fileName = file[file.length - 1];
+
+    document.getElementById($name + 'Err').innerHTML = '';
+}
+
+
+$("#file").on("change", function(e){
+    e.preventDefault();
+    const fileInput = document.getElementById('file');
+    const filePath = fileInput.value;
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    if (!allowedExtensions.exec(filePath)) {
+      printError("fileErr", "File cannot be empty");
+      fileInput.value = '';
+    } else {
+      fileErr = false;
+    } 
+    myFunction('file'); 
+});
+
+
+function validateForm() {
+    const email = document.register.email.value;
+    const name = document.register.username.value;
+    const age = document.getElementById('age').value;
+    const phones =  Object.values(document.getElementsByClassName('phone')).map(function (element) {return element.value})
+    const file = document.getElementById('file');
+    const summary = document.getElementById('summary');
+    let nameErr = emailErr = ageErr = summaryErr = phoneErr = fileErr = true;
+    let regex;
+
+    if (name === "") {
+        printError("nameErr", "Username cannot be empty");
+    } else if (name.length < 3) {
+        printError("nameErr", "Invalid name length must be less then 3 letters");
+    } else {
+        regex = /^[a-zA-Z]+$/;
+        if (regex.test(name) === false) {
+            printError("nameErr", "Name must have only letters");
+        } else {
+            nameErr = false;
+        }
+    }
+
+    if (age === "") {
+        printError("ageErr", "Please write your age");
+    } else {
+        ageErr = false;
+    }
+
+    if (email === "") {
+        printError("emailErr", "Email cannot be empty");
+    } else {
+        regex = /^\S+@\S+\.\S+$/;
+        if (regex.test(email) === false) {
+            printError("emailErr", "Invalid email format");
+        } else {
+            emailErr = false;
+        }
+    }
+
+    if (file.value === "") {
+        printError("fileErr", "Please upload image");
+    } else {
+        fileErr = false;
+    }
+
+    
+    regex = /^[+]?(1\-|1\s|1|\d{3}\-|\d{3}\s|)?((\(\d{3}\))|\d{3})(\-|\s)?(\d{3})(\-|\s)?(\d{4})$/g;
+    
+    if (regex.test(phones.value) === false) {
+        printError("phoneErr", "Invalid phone format");
+    } else {
+        phoneErr = false;
+    }
+    
+
+    if (summary.value.trim() === '') {
+        printError("summaryErr", "Summary cannot be empty");
+    } else {
+        summaryErr = false;
+    }
+
+    if ((nameErr || emailErr || ageErr || summaryErr || phoneErr || fileErr) === true) {
+        return false;
+    }
+}
 </script>
 </body>
 
